@@ -1,20 +1,6 @@
 import "jest";
 import Piece from "../Piece";
 
-function sortMove(moves) {
-    return moves.sort((a, b) => toNum(a) - toNum(b));
-
-    function toNum(move) {
-        return move.from
-            ? move.from.x * 9 * 9 * 9 + move.from.y * 9 * 9 + move.to.x * 9 + move.to.y
-            : -kindToNum(move.kind) * 9 * 9 * 2 + move.color * 9 * 9 + move.to.x * 9 + move.to.y;
-    }
-
-    function kindToNum(kind) {
-        return ["FU", "KY", "KE", "GI", "KI", "KA", "HI", "OU"];
-    }
-}
-
 describe("promote", () => {
     it("normal", () => {
         const fu = new Piece("+FU");

@@ -4,7 +4,7 @@ import {MOVE_DEF, PRESET} from "../Constants";
 describe("preset", () => {
     it("snapshots", () => {
         for (const name in PRESET) {
-            expect(PRESET[name]).toMatchSnapshot(name);
+            expect(PRESET[name as keyof typeof PRESET]).toMatchSnapshot(name);
         }
     });
 });
