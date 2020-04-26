@@ -646,6 +646,10 @@ describe("captureByColor", () => {
     it("error", () => {
         expect(() => shogi.captureByColor(7, 7, Color.Black)).toThrow();
     });
+    it("error: no piece", () => {
+        shogi.editMode(true);
+        expect(() => shogi.captureByColor(7, 6, Color.Black)).toThrow();
+    });
 });
 describe("flip", () => {
     it("normal", () => {
