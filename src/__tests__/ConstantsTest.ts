@@ -3,15 +3,15 @@ import {MOVE_DEF, PRESET} from "../Constants";
 
 describe("preset", () => {
     it("snapshots", () => {
-        for (const name in PRESET) {
+        Object.keys(PRESET).forEach((name) => {
             expect(PRESET[name as keyof typeof PRESET]).toMatchSnapshot(name);
-        }
+        });
     });
 });
 describe("move def", () => {
     it("snapshots", () => {
-        for (const kind in MOVE_DEF) {
-            expect(MOVE_DEF[kind]).toMatchSnapshot(kind);
-        }
+        Object.keys(MOVE_DEF).forEach((kind) => {
+            expect(MOVE_DEF[kind as keyof typeof MOVE_DEF]).toMatchSnapshot(kind);
+        });
     });
 });

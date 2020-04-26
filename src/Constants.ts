@@ -1,5 +1,6 @@
 import Color from "./Color";
 import IMoveDefinition from "./IMoveDefinition";
+import {PieceKind} from "./PieceKind";
 
 const EMPTY = " *  *  *  *  *  *  *  *  * ";
 const BOARD3_9 = [
@@ -118,7 +119,7 @@ const BL = [1, 1];
 
 const kin = {just: [FR, F, FL, R, L, B]};
 
-export const MOVE_DEF: Readonly<{ [index: string]: Readonly<IMoveDefinition> }> = {
+export const MOVE_DEF: Readonly<{ [index in PieceKind]: Readonly<IMoveDefinition> }> = {
     FU: {just: [F]},
     KY: {fly: [F]},
     KE: {just: [[-1, -2], [1, -2]]}, // tslint:disable-line:object-literal-sort-keys

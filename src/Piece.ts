@@ -1,9 +1,9 @@
 import Color from "./Color";
-import PieceKind from "./PieceKind";
+import {PieceKind, PromotedPieceKind, UnpromotedPieceKind} from "./PieceKind";
 
 export default class Piece {
     // 成った時の種類を返す．なければそのまま．
-    public static promote(kind: string): string {
+    public static promote(kind: PieceKind): PromotedPieceKind {
         return ({
             FU: "TO",
             KY: "NY",
@@ -11,10 +11,10 @@ export default class Piece {
             GI: "NG",
             KA: "UM",
             HI: "RY",
-        } as {[key: string]: string})[kind] || kind;
+        } as {[key in PieceKind]: PromotedPieceKind})[kind] || kind;
     }
     // 表に返した時の種類を返す．表の場合はそのまま．
-    public static unpromote(kind: string): string {
+    public static unpromote(kind: PieceKind): UnpromotedPieceKind {
         return ({
             TO: "FU",
             NY: "KY", // tslint:disable-line object-literal-sort-keys
@@ -24,13 +24,13 @@ export default class Piece {
             UM: "KA",
             RY: "HI",
             OU: "OU",
-        } as {[key: string]: string})[kind] || kind;
+        } as {[key in PieceKind]: UnpromotedPieceKind})[kind] || kind;
     }
     // 成れる駒かどうかを返す
-    public static canPromote(kind: string): boolean {
+    public static canPromote(kind: PieceKind): boolean {
         return Piece.promote(kind) !== kind;
     }
-    public static isPromoted(kind: string): boolean {
+    public static isPromoted(kind: PieceKind): boolean {
         return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(kind) >= 0;
     }
     public static oppositeColor(color: Color): Color {
@@ -61,11 +61,11 @@ export default class Piece {
     }
 
     public color: Color; // 先後
-    public kind: string; // 駒の種類
+    public kind: PieceKind; // 駒の種類
     // "+FU"などのCSAによる駒表現から駒オブジェクトを作成
     constructor(csa: string) {
         this.color = csa.slice(0, 1) === "+" ? Color.Black : Color.White;
-        this.kind = csa.slice(1);
+        this.kind = csa.slice(1) as PieceKind;
     }
     // 成る
     public promote(): void {

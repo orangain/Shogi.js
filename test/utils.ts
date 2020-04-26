@@ -1,4 +1,5 @@
-import { IMove } from "../src/shogi";
+import {PieceKind} from "../src/PieceKind";
+import {IMove} from "../src/shogi";
 
 export function sortMoves(moves: IMove[]) {
     return moves.sort((a, b) => {
@@ -25,7 +26,7 @@ export function sortMoves(moves: IMove[]) {
         return a !== 0 ? a : b;
     }
 
-    function kindToNum(kind: string | undefined) {
+    function kindToNum(kind: PieceKind | undefined) {
         return ["FU", "KY", "KE", "GI", "KI", "KA", "HI", "OU"].indexOf(kind!);
     }
 }

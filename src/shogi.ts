@@ -8,11 +8,12 @@ import Color from "./Color";
 import {MOVE_DEF, PRESET} from "./Constants";
 import IMoveDefinition from "./IMoveDefinition";
 import Piece from "./Piece";
+import {PieceKind} from "./PieceKind";
 import "./polyfills";
 import {fromPreset, fromSfen, toCSA, toSfen} from "./Serialization";
 
 export class Shogi {
-    private static getIllegalUnpromotedRow(kind: string) {
+    private static getIllegalUnpromotedRow(kind: PieceKind) {
         switch (kind) {
             case "FU":
             case "KY":
@@ -111,7 +112,7 @@ export class Shogi {
                   tox: number,
                   toy: number,
                   promote: boolean = false,
-                  capture?: string): void {
+                  capture?: PieceKind): void {
         const piece = this.get(tox, toy);
         if (piece == null) {
             throw new Error("no piece found at " + tox + ", " + toy);
@@ -139,7 +140,7 @@ export class Shogi {
     }
 
     // (tox, toy)へcolorの持ち駒のkindを打つ．
-    public drop(tox: number, toy: number, kind: string, color: Color = this.turn): void {
+    public drop(tox: number, toy: number, kind: PieceKind, color: Color = this.turn): void {
         this.checkTurn(color);
         if (this.get(tox, toy) != null) {
             throw new Error("there is a piece at " + tox + ", " + toy);
@@ -252,7 +253,7 @@ export class Shogi {
     }
 
     // (x, y)に行けるcolor側のkindの駒の動きを得る
-    public getMovesTo(x: number, y: number, kind: string, color: Color = this.turn): IMove[] {
+    public getMovesTo(x: number, y: number, kind: PieceKind, color: Color = this.turn): IMove[] {
         const to = {x, y};
         const ret = [];
         for (let i = 1; i <= 9; i++) {
@@ -362,7 +363,7 @@ export class Shogi {
     }
 
     // color側のkindの駒を取って返す
-    private popFromHand(kind: string, color: Color): Piece {
+    private popFromHand(kind: PieceKind, color: Color): Piece {
         const hand = this.hands[color];
         for (let i = 0; i < hand.length; i++) {
             if (hand[i].kind !== kind) {
@@ -417,9 +418,9 @@ export interface IOtherSetting {
 export interface IMove {
     from?: { x: number; y: number; };
     to: { x: number; y: number; };
-    kind?: string;
+    kind?: PieceKind;
     color?: Color;
 }
 
-export {Color, Piece, IMoveDefinition};
+export {Color, Piece, PieceKind, IMoveDefinition};
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
