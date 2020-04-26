@@ -29,10 +29,10 @@ export class Shogi {
         return color === Color.Black ? y : 10 - y;
     }
 
-    public board: Piece[][]; // 盤面
-    public hands: Piece[][]; // 持ち駒
-    public turn: Color; // 次の手番
-    public flagEditMode: boolean; // 編集モードかどうか
+    public board!: Array<Array<Piece | null>>; // 盤面
+    public hands!: [Piece[], Piece[]]; // 持ち駒
+    public turn!: Color; // 次の手番
+    public flagEditMode!: boolean; // 編集モードかどうか
     constructor(setting?: ISettingType) {
         this.initialize(setting);
     }
@@ -130,9 +130,9 @@ export class Shogi {
         }
         if (capture) {
             if (Piece.isPromoted(capture)) {
-                captured.promote();
+                captured!.promote();
             }
-            this.set(tox, toy, captured);
+            this.set(tox, toy, captured!);
         }
         this.editMode(editMode);
         this.prevTurn();
@@ -170,17 +170,17 @@ export class Shogi {
     // 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
     public getMovesFrom(x: number, y: number): IMove[] {
         // 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
-        const legal = function(x: number, y: number, color: Color) {
+        const legal = (x: number, y: number, color: Color) => {
             if (x < 1 || 9 < x || y < 1 || 9 < y) {
                 return false;
             }
             const piece = this.get(x, y);
             return piece == null || piece.color !== color;
-        }.bind(this);
-        const shouldStop = function(x: number, y: number, color: Color) {
+        };
+        const shouldStop = (x: number, y: number, color: Color) => {
             const piece = this.get(x, y);
             return piece != null && piece.color !== color;
-        }.bind(this);
+        };
         const piece = this.get(x, y);
         if (piece == null) {
             return [];
@@ -271,7 +271,7 @@ export class Shogi {
     }
 
     // (x, y)の駒を得る
-    public get(x: number, y: number): Piece {
+    public get(x: number, y: number): Piece | null {
         return this.board[x - 1][y - 1];
     }
 
@@ -300,6 +300,9 @@ export class Shogi {
             throw new Error("cannot edit board without editMode");
         }
         const piece = this.get(x, y);
+        if (piece == null) {
+            throw new Error("no piece found at " + x + ", " + y);
+        }
         this.set(x, y, null);
         piece.unpromote();
         if (piece.color !== color) {
@@ -340,13 +343,13 @@ export class Shogi {
     // 以下private method
 
     // (x, y)に駒を置く
-    private set(x: number, y: number, piece: Piece): void {
+    private set(x: number, y: number, piece: Piece | null): void {
         this.board[x - 1][y - 1] = piece;
     }
 
     // (x, y)の駒を取って反対側の持ち駒に加える
     private capture(x: number, y: number): void {
-        const piece = this.get(x, y);
+        const piece = this.get(x, y)!;
         this.set(x, y, null);
         piece.unpromote();
         piece.inverse();
