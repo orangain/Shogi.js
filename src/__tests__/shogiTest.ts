@@ -2,7 +2,7 @@ import "jest";
 import {boardBitMapToXYs, sortMoves} from "../../test/utils";
 import {Color, Shogi} from "../shogi";
 
-let shogi;
+let shogi: Shogi;
 beforeEach(() => {
     shogi = new Shogi();
 });
