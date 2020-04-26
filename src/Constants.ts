@@ -14,7 +14,7 @@ const BOARD2_9 = [EMPTY].concat(BOARD3_9);
 /**
  * 既定の初期局面
  */
-export const PRESET: Readonly<{ [index: string]: Readonly<{ readonly board: string[]; readonly turn: Color; }> }> = {
+export const PRESET = {
     "HIRATE": {
         board: [
             "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
@@ -105,7 +105,7 @@ export const PRESET: Readonly<{ [index: string]: Readonly<{ readonly board: stri
         ].concat(BOARD2_9),
         turn: Color.White,
     },
-};
+} as const;
 
 const F = [0, -1];
 const B = [0, 1];

@@ -4,8 +4,8 @@ import Piece from "./Piece";
 import {ISettingType, Shogi} from "./shogi";
 
 export function fromPreset(shogi: Shogi, setting: ISettingType) {
-    const board = [];
-    const hands = [[], []];
+    const board: Array<Array<Piece | null>> = [];
+    const hands: [Piece[], Piece[]] = [[], []];
     let turn;
     if (setting.preset !== "OTHER") {
         for (let i = 0; i < 9; i++) {
@@ -63,7 +63,7 @@ export function toCSA(shogi: Shogi) {
 }
 
 export function fromSfen(shogi: Shogi, sfen: string) {
-    const board = [];
+    const board: Array<Array<Piece | null>> = [];
     for (let i = 0; i < 9; i++) {
         board[i] = [];
         for (let j = 0; j < 9; j++) {
@@ -93,7 +93,7 @@ export function fromSfen(shogi: Shogi, sfen: string) {
     }
     shogi.board = board;
     shogi.turn = segments[1] === "b" ? Color.Black : Color.White;
-    const hands = [[], []];
+    const hands: [Piece[], Piece[]] = [[], []];
     let sfenHands = segments[2];
     if (sfenHands !== "-") {
         while (sfenHands.length > 0) {
@@ -113,7 +113,7 @@ export function fromSfen(shogi: Shogi, sfen: string) {
     shogi.hands = hands;
 }
 
-export function toSfen(shogi: Shogi, moveCount) {
+export function toSfen(shogi: Shogi, moveCount: number) {
     const ret = [];
     const sfenBoard = [];
     for (let y = 0; y < 9; y++) {
@@ -143,7 +143,7 @@ export function toSfen(shogi: Shogi, moveCount) {
     } else {
         let sfenHands = "";
         const kinds = ["R", "B", "G", "S", "N", "L", "P", "r", "b", "g", "s", "n", "l", "p"];
-        const count = {};
+        const count: {[index: string]: number} = {};
         for (let i = 0; i < 2; i++) {
             for (const hand of shogi.hands[i]) {
                 const key = hand.toSFENString();

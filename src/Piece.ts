@@ -1,5 +1,5 @@
 import Color from "./Color";
-import PieceKind from "./PieceKind"
+import PieceKind from "./PieceKind";
 
 export default class Piece {
     // 成った時の種類を返す．なければそのまま．
