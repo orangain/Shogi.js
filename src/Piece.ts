@@ -1,6 +1,8 @@
 import Color from "./Color";
 import {PieceKind, PromotedPieceKind, UnpromotedPieceKind} from "./PieceKind";
 
+type SFENPieceKind = "P" | "L" | "N" | "S" | "G" | "B" | "R" | "K";
+
 export default class Piece {
     // 成った時の種類を返す．なければそのまま．
     public static promote(kind: PieceKind): PromotedPieceKind {
@@ -52,7 +54,7 @@ export default class Piece {
             B: "KA",
             R: "HI",
             K: "OU",
-        } as {[key: string]: string})[sfen.toUpperCase()];
+        } as {[key in SFENPieceKind]: UnpromotedPieceKind})[sfen.toUpperCase() as SFENPieceKind];
         const piece = new Piece(color + kind);
         if (promoted) {
             piece.promote();
@@ -85,7 +87,7 @@ export default class Piece {
     }
     // SFENによる駒表現の文字列を返す
     public toSFENString(): string {
-        const sfenPiece = ({
+        const sfenPiece: SFENPieceKind = ({
             FU: "P", // Pawn
             KY: "L", // Lance
             // tslint:disable-next-line object-literal-sort-keys
@@ -95,7 +97,7 @@ export default class Piece {
             KA: "B", // Bishop
             HI: "R", // Rook
             OU: "K", // King
-        } as {[key: string]: string})[Piece.unpromote(this.kind)];
+        } as const)[Piece.unpromote(this.kind)];
         return (Piece.isPromoted(this.kind) ? "+" : "") +
             (this.color === Color.Black ? sfenPiece : sfenPiece.toLowerCase());
     }
