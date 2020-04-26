@@ -1,20 +1,21 @@
 import Color from "./Color";
+import PieceKind from "./PieceKind"
 
 export default class Piece {
     // 成った時の種類を返す．なければそのまま．
     public static promote(kind: string): string {
-        return {
+        return ({
             FU: "TO",
             KY: "NY",
             KE: "NK", // tslint:disable-line object-literal-sort-keys
             GI: "NG",
             KA: "UM",
             HI: "RY",
-        }[kind] || kind;
+        } as {[key: string]: string})[kind] || kind;
     }
     // 表に返した時の種類を返す．表の場合はそのまま．
     public static unpromote(kind: string): string {
-        return {
+        return ({
             TO: "FU",
             NY: "KY", // tslint:disable-line object-literal-sort-keys
             NK: "KE",
@@ -23,7 +24,7 @@ export default class Piece {
             UM: "KA",
             RY: "HI",
             OU: "OU",
-        }[kind] || kind;
+        } as {[key: string]: string})[kind] || kind;
     }
     // 成れる駒かどうかを返す
     public static canPromote(kind: string): boolean {
@@ -42,7 +43,7 @@ export default class Piece {
             sfen = sfen.slice(1);
         }
         const color = sfen.match(/[A-Z]/) ? "+" : "-";
-        const kind = {
+        const kind = ({
             P: "FU",
             L: "KY", // tslint:disable-line object-literal-sort-keys
             N: "KE",
@@ -51,7 +52,7 @@ export default class Piece {
             B: "KA",
             R: "HI",
             K: "OU",
-        }[sfen.toUpperCase()];
+        } as {[key: string]: string})[sfen.toUpperCase()];
         const piece = new Piece(color + kind);
         if (promoted) {
             piece.promote();
@@ -84,7 +85,7 @@ export default class Piece {
     }
     // SFENによる駒表現の文字列を返す
     public toSFENString(): string {
-        const sfenPiece = {
+        const sfenPiece = ({
             FU: "P", // Pawn
             KY: "L", // Lance
             // tslint:disable-next-line object-literal-sort-keys
@@ -94,7 +95,7 @@ export default class Piece {
             KA: "B", // Bishop
             HI: "R", // Rook
             OU: "K", // King
-        }[Piece.unpromote(this.kind)];
+        } as {[key: string]: string})[Piece.unpromote(this.kind)];
         return (Piece.isPromoted(this.kind) ? "+" : "") +
             (this.color === Color.Black ? sfenPiece : sfenPiece.toLowerCase());
     }
